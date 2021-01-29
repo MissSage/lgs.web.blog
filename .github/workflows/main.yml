@@ -1,4 +1,4 @@
-name: lgs.web.api自动部署工作流
+name: blog auto pub and dep
 on:
     push:
         tags: 
