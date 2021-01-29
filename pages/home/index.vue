@@ -2,7 +2,7 @@
   <div class="home-page">
     <div class="banner">
       <div class="container">
-        <h1 class="logo-font">咪咪叨</h1>
+        <h1 class="logo-font">DDM</h1>
         <p>Your sadness,My happiness.</p>
       </div>
     </div>
