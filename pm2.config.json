@@ -1,0 +1,7 @@
+{
+    "apps": [{
+        "name": "lgs.web.blog",
+        "script": "yarn",
+        "args": "start"
+    }]
+}
