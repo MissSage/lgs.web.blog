@@ -4,7 +4,7 @@
 
 <script>
 import { upLoadImage } from "@/api/article";
-import { proxyRemoteUrl,proxyLocalUrl } from "~/Public/config";
+import { proxyRemoteUrl,proxyLocalUrl } from "~/config";
 import 'highlight.js/styles/monokai.css'
 import hljs from 'highlight.js'
 export default {
