@@ -1,2 +1,5 @@
-export const baseURL='http://www.miaojiangjiang.com:90'
-export const TOKEN='db48e2de6f176ed848a91360e657b63c99c8658e'
+export const baseRemoteHost='0.0.0.0'
+export const baseLocalHost='localhost'
+export const proxyRemoteUrl='http://www.miaojiangjiang.com:90'
+export const proxyLocalUrl='http://www.miaojiangjiang.com:90'
+// export const proxyLocalUrl='http://localhost:8081'

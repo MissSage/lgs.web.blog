@@ -42,16 +42,15 @@
 import { getArticle } from '@/api/article'
 import MarkdownIt from 'markdown-it'
 import ArticleMeta from './components/article-meta'
+import 'highlight.js/styles/monokai.css'
 // import ArticleComments from './components/article-comments'
 
 export default {
   name: 'ArticleIndex',
   async asyncData ({ params }) {
-    console.log(params)
     const {data} = await getArticle(params.slug)
-    console.log(data)
     const article = data.response
-    const md = new MarkdownIt()
+    // const md = new MarkdownIt()
     console.log(article.bcontent)
     // article.bcontent = md.render(article.bcontent)
     console.log(article.bcontent)
@@ -80,5 +79,8 @@ export default {
   display: block;
   width: 80%;
   height: 100%;
+}
+img{
+  min-width: 70%;
 }
 </style>

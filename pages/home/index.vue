@@ -68,12 +68,12 @@
 </template>
 
 <script>
-import { getArticles } from "@/api/article";
+import { getArticles } from "@/api/article"
 import { mapState } from "vuex";
 
 export default {
   name: "HomeIndex",
-  async asyncData() {
+  async asyncData(context) {
     let articles = [],
     query={
       id:'',
@@ -82,8 +82,7 @@ export default {
       key : "",
       bcategory : "技术博文"
     }
-    const { data } = await getArticles(query)
-    console.log(data)
+    const { data } = await await getArticles(query)
     articles = data.response.data
     return {
       articles

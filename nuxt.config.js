@@ -1,7 +1,7 @@
 /**
  * Nuxt.js 配置文件
  */
-
+import * as config from './Public/config'
 module.exports = {
   router: {
     linkActiveClass: 'active',
@@ -47,19 +47,41 @@ module.exports = {
   },
 
   server: {
-    host: '0.0.0.0',
-    port: 2364
+    host: process.env.NODE_ENV==='production'? config.baseRemoteHost:config.baseLocalHost,
+    port: 80
   },
-
+  axios: {
+    // baseURL:'http://localhost',
+    baseURL:'http://'+process.env.NODE_ENV==='production'? config.baseRemoteHost:config.baseLocalHost,
+    // See https://github.com/nuxt-community/axios-module#options
+    proxy: true, // 表示开启代理
+    prefix: '/api', // 表示给请求url加个前缀 /api
+    credentials: true // 表示跨域请求时是否需要使用凭证
+  },
+  proxy: {
+    '/api': {
+        // target: 'http://www.miaojiangjiang.com:90', // 目标接口域名
+        target:process.env.NODE_ENV==='production'? config.proxyRemoteUrl:config.proxyLocalUrl,
+        changeOrigin: true, // 表示是否跨域
+        // pathRewrite: {
+        //   '^/api': '', // 把 /api 替换成‘’
+        // }
+    }
+  },
+  
+  modules: [
+    '@nuxtjs/axios', 
+    '@nuxtjs/proxy'
+  ],
+  devtool: '#source-map',
   // 注册插件
   plugins: [
-    '~/plugins/request.js',
     '~/plugins/dayjs.js',
+    '~/plugins/request.js',
     {
       src: '~plugins/TextEditor.js',
       ssr: false
     },
     '~/plugins/message.js'
   ],
-  devtool: '#source-map'
 }

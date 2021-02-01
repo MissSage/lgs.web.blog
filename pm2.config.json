@@ -1,7 +1,10 @@
 {
     "apps": [{
+        "id":"1",
+        "namespace":"lgs.web",
         "name": "lgs.web.blog",
         "script": "npm",
-        "args": "start"
+        "args": "start",
+        "version":"0.0.15"
     }]
 }

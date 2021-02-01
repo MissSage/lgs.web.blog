@@ -1,5 +1,5 @@
 {
-  "name": "realworld-nuxtjs",
+  "name": "lgs.web.blog",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,13 +12,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@nuxtjs/axios": "^5.12.5",
+    "@nuxtjs/proxy": "^2.1.0",
     "axios": "^0.21.1",
     "cookieparser": "^0.1.0",
     "dayjs": "^1.8.28",
     "element-ui": "^2.15.0",
+    "highlight.js": "^10.5.0",
     "js-cookie": "^2.2.1",
     "markdown-it": "^11.0.0",
     "nuxt": "^2.12.2",
-    "wangeditor": "^4.6.4"
+    "wangeditor": "^4.6.5"
   }
 }

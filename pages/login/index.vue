@@ -23,7 +23,7 @@
           <form @submit.prevent="onSubmit">
             <fieldset class="form-group">
               <input
-                v-model="user.username"
+                v-model="user.name"
                 class="form-control form-control-lg"
                 type="text"
                 placeholder="Your Name"
@@ -33,7 +33,7 @@
 
             <fieldset class="form-group">
               <input
-                v-model="user.password"
+                v-model="user.pass"
                 class="form-control form-control-lg"
                 type="password"
                 placeholder="Password"
