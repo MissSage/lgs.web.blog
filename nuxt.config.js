@@ -1,7 +1,7 @@
 /**
  * Nuxt.js 配置文件
  */
-import * as config from './Public/config'
+import * as config from './config'
 module.exports = {
   router: {
     linkActiveClass: 'active',
