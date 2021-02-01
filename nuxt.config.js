@@ -48,11 +48,11 @@ module.exports = {
 
   server: {
     host: process.env.NODE_ENV==='production'? config.baseRemoteHost:config.baseLocalHost,
-    port: 80
+    port: 8080
   },
   axios: {
     // baseURL:'http://localhost',
-    baseURL:'http://'+process.env.NODE_ENV==='production'? config.baseRemoteHost:config.baseLocalHost,
+    baseURL:'http://'+process.env.NODE_ENV==='production'? config.baseRemoteHost:config.baseLocalHost+':80',
     // See https://github.com/nuxt-community/axios-module#options
     proxy: true, // 表示开启代理
     prefix: '/api', // 表示给请求url加个前缀 /api
