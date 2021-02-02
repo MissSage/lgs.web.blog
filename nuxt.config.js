@@ -1,7 +1,7 @@
 /**
  * Nuxt.js 配置文件
  */
-import * as config from './config'
+import * as config from './Public/config'
 module.exports = {
   router: {
     linkActiveClass: 'active',
@@ -47,12 +47,13 @@ module.exports = {
   },
 
   server: {
-    host: process.env.NODE_ENV==='production'? config.baseRemoteHost:config.baseLocalHost,
-    port: 8080
+    host: '0.0.0.0',
+    port: 80
   },
   axios: {
     // baseURL:'http://localhost',
-    baseURL:'http://'+process.env.NODE_ENV==='production'? config.baseRemoteHost:config.baseLocalHost+':80',
+    // baseURL:'http://localhost:2364',
+    baseURL:config.baseRemoteHost,
     // See https://github.com/nuxt-community/axios-module#options
     proxy: true, // 表示开启代理
     prefix: '/api', // 表示给请求url加个前缀 /api
