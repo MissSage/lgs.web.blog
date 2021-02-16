@@ -39,6 +39,16 @@ module.exports = {
               path: '/article/:slug',
               name: 'article',
               component: resolve(__dirname, 'pages/article/')
+            },
+            {
+              path: '/settings',
+              name: 'settings',
+              component: resolve(__dirname, 'pages/settings/')
+            },
+            {
+              path: '/profile/:username',
+              name: 'profile',
+              component: resolve(__dirname, 'pages/profile/')
             }
           ]
         }
@@ -83,6 +93,6 @@ module.exports = {
       src: '~plugins/TextEditor.js',
       ssr: false
     },
-    '~/plugins/message.js'
+    '~/plugins/elementui.js'
   ],
 }

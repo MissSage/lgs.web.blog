@@ -29,7 +29,7 @@ export default {
       editor.config.uploadImgMaxSize = 20 * 1024 * 1024
       editor.config.uploadImgMaxLength = 5
       editor.config.height = 500
-      editor.config.placeholder = '请在此处编写您的文章'
+      editor.config.placeholder = 'Write your article here'
       editor.highlight = hljs
       editor.config.customUploadImg =async function (resultFiles, insertImgFn) {
         const fd = new FormData();
@@ -39,7 +39,7 @@ export default {
 
         const { data } = await upLoadImage(fd);
         if (data.success == true) {
-          console.log(data.response);
+          // console.log(data.response);
           if (data.response && data.response.length) {
             var baseURL=process.env.NODE_ENV==='production'? proxyRemoteUrl:proxyLocalUrl
             data.response.forEach((item) => {
@@ -47,7 +47,7 @@ export default {
             });
           }
         } else {
-          console.log(data);
+          // console.log(data);
           console.log(baseURL + "/" + data);
         }
       };

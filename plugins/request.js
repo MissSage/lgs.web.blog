@@ -13,7 +13,7 @@ export const request = axios.create({
 
 //通过插件机制获取到上下文对象（query、params、req、res、app、store...）
 //插件导出函数必须作为 default 成员
-export default ({ store }) => {
+export default ({ store ,redirect}) => {
   // 请求拦截器
   // Add a request interceptor
   // 任何请求都要经过请求拦截器
@@ -22,7 +22,7 @@ export default ({ store }) => {
     // Do something before request is sent
     // 请求就会经过这里
     const { token } = store.state
-    console.log(config)
+    // console.log(config)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -33,5 +33,16 @@ export default ({ store }) => {
     // 如果请求失败(此时请求还没有发出去)就会进入这里
     // Do something with request error
     return Promise.reject(error)
+  })
+  request.interceptors.response.use(response=>{
+    return response
+  },function(error){
+    console.log(error.response)
+    let res=error.response
+
+    if(res.status==401){
+      return redirect('/login')
+    }
+		return Promise.resolve(error.response)
   })
 }

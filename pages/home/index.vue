@@ -52,13 +52,14 @@
               :to="{
                 name: 'article',
                 params: {
-                  slug: article.bID,
+                  slug: article.Id,
                 },
               }"
             >
               <h1>{{ article.btitle }}</h1>
               <p>{{ article.bRemark }}</p>
-              <span>Read more...</span>
+              <span v-if="user">Read more...</span>
+              <span v-else>Login for more...</span>
             </nuxt-link>
           </div>
         </div>
@@ -76,13 +77,16 @@ export default {
   async asyncData(context) {
     let articles = [],
     query={
-      id:'',
       page : 1,
-      pageSize : 50,
+      intPageSize : 50,
       key : "",
-      bcategory : "技术博文"
+      isPublic:true,
+      isTop:false,
+      bcategory : "技术博文",
+      tag:''
     }
     const { data } = await await getArticles(query)
+    // console.log(data)
     articles = data.response.data
     return {
       articles

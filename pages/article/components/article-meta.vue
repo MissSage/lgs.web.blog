@@ -15,7 +15,7 @@
           username: article.bsubmitter
         }
       }">
-        {{ article.bsubmitter }}
+        {{ article.Author.uLoginName }}
       </nuxt-link>
       <span class="date">{{ article.bCreateTime | date('MMM DD, YYYY') }}</span>
     </div>
@@ -51,6 +51,9 @@ export default {
       type: Object,
       required: true
     }
+  },
+  mounted(){
+    // console.log(this.article)
   }
 }
 </script>

@@ -4,7 +4,7 @@ import { request } from '@/plugins/request'
 export const postArticle = data => {
     return request({
         method: 'POST',
-        url: '/api/Blog',
+        url: '/api/blogarticle',
         // headers:{
         //     Accept: 'application/json-patch+json',
         // },
@@ -14,14 +14,29 @@ export const postArticle = data => {
 export const getArticles=data=>{
     return request({
         method:'GET',
-        url:'/api/Blog',
+        url:'/api/blogarticle',
         params:data
     })
 }
 export const getArticle=slug=>{
     return request({
         method:'GET',
-        url:`/api/Blog/${slug}`
+        url:`/api/blogarticle/${slug}`
+    })
+}
+export const getComments=data=>{
+    return request({
+        method:'GET',
+        url:`/api/blogarticle_comments`,
+        params:data
+    })
+}
+//提交评论
+export const postComment=data=>{
+    return request({
+        method:'POST',
+        url:'/api/blogarticle_comments',
+        params:data
     })
 }
 //上传图片

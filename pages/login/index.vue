@@ -82,27 +82,27 @@ export default {
         const { data } = this.isLogin
           ? await login(this.user)
           : await register(this.user);
-        console.log(data)
+        // console.log(data)
         if(data.success==true){
           this.$store.commit("setToken", data.response);
           Cookie.set('token',data.response)
           GetUserByToken(data.response).then(result=>{
             let res=result.data;
-            console.log(res)
+            // console.log(res)
             if(res.success==true){
               this.$store.commit("setUser", res.response);
               Cookie.set("user", res.response)
               this.$router.push("/")
             }else{
-              console.log(res)
+              // console.log(res)
             }
           })
         }else{
-          console.log(data)
+          // console.log(data)
         }
         // 跳转到首页
       } catch (err) {
-        console.log(err)
+        // console.log(err)
         this.errors = err.response.data.errors;
       }
     },

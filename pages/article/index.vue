@@ -19,20 +19,20 @@
 
       <hr/>
 
-      <div class="article-actions">
-        <article-meta :article="article" />
-      </div>
+      
 
       <div class="row">
 
         <div class="col-xs-12 col-md-8 offset-md-2">
 
-          <!-- <article-comments :article="article" /> -->
+          <article-comments :article="article" />
 
         </div>
 
       </div>
-
+      <div class="article-actions">
+        <article-meta :article="article" />
+      </div>
     </div>
 
   </div>
@@ -43,17 +43,18 @@ import { getArticle } from '@/api/article'
 import MarkdownIt from 'markdown-it'
 import ArticleMeta from './components/article-meta'
 import 'highlight.js/styles/monokai.css'
-// import ArticleComments from './components/article-comments'
+import ArticleComments from './components/article-comments'
 
 export default {
   name: 'ArticleIndex',
   async asyncData ({ params }) {
+    console.log(params)
     const {data} = await getArticle(params.slug)
     const article = data.response
     // const md = new MarkdownIt()
-    console.log(article.bcontent)
+    // console.log(article.bcontent)
     // article.bcontent = md.render(article.bcontent)
-    console.log(article.bcontent)
+    // console.log(article.bcontent)
 
     return {
       article
@@ -61,13 +62,13 @@ export default {
   },
   components: {
     ArticleMeta,
-    // ArticleComments
+    ArticleComments
   },
   head () {
     return {
-      title: `${this.article.btitle} - 咪咪叨`,
+      title: `${this.article.btitle} - 叨叨咪`,
       meta: [
-        { hid: 'description', name: 'description', content: this.article.bRemark }
+        { hid: 'description', name: 'description', content: this.article.digest }
       ]
     }
   }
