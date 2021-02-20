@@ -6,7 +6,8 @@ export const state = () => {
   return {
     // 当前登录用户的登录状态
     user: null,
-    token:''
+    token:'',
+    lastPath:''
   }
 }
 
@@ -14,8 +15,14 @@ export const mutations = {
   setUser (state, data) {
     state.user = data
   },
+  setUserPhoto(state,data){
+    state.user.uPhoto = data
+  },
   setToken (state,token){
     state.token=token
+  },
+  setPath(state,path){
+    state.lastPath=path
   },
   removeToken(state){
     state.token=''

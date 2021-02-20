@@ -51,17 +51,19 @@
 </template>
 
 <script>
-import { login, register, GetUserByToken } from "@/api/user";
-
+import { login, register, GetUserByToken } from "@/api/user"
+import {baseRemoteHost} from '../../Public/config.js'
+import {mapState} from 'vuex'
 // 仅在客户端加载 js-cookie 包
-const Cookie = process.client ? require("js-cookie") : undefined;
+const Cookie = process.client ? require("js-cookie") : undefined
 
 export default {
   middleware: "notAuthenticated",
   name: "LoginIndex",
   computed: {
+    ...mapState(['lastPath']),
     isLogin() {
-      return this.$route.name === "login";
+      return this.$route.name === "login"
     },
   },
   data() {
@@ -73,10 +75,12 @@ export default {
       errors: {}, // 错误信息
     };
   },
-
+  mounted(){
+    console.log(this.$route)
+  },
   methods: {
     async onSubmit() {
-      debugger
+      console.log(this.$route)
       try {
         // 提交表单请求登录
         const { data } = this.isLogin
@@ -92,7 +96,13 @@ export default {
             if(res.success==true){
               this.$store.commit("setUser", res.response);
               Cookie.set("user", res.response)
-              this.$router.push("/")
+              console.log(this.$route)
+              if(this.lastPath){
+                　　this.$router.push(this.lastPath); // 登录成功后，返回上次进入的页面；
+              }else{
+                this.$router.push("/")
+              }
+              
             }else{
               // console.log(res)
             }

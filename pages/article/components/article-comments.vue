@@ -1,16 +1,24 @@
 <template>
   <div>
-    <form class="card comment-form">
+    <form class="card comment-form" v-if="user">
       <div class="card-block">
         <textarea v-model="submitForm.bContent" class="form-control" placeholder="Write a comment..." rows="3"></textarea>
       </div>
       <div class="card-footer">
-        <img :src="article.Author.uPhoto" class="comment-author-img" />
+        <img :src="user.uPhoto" class="comment-author-img" />
         <button class="btn btn-sm btn-primary"
           @click.prevent="submiteComment"
         >
         Post Comment
         </button>
+      </div>
+    </form>
+    <form class="card comment-form" v-else>
+      <div class="card-footer">
+        <button type="button" class="btn btn-sm btn-primary"
+                        @click.prevent="toLogin"
+                    >Log on to reply
+                      </button>
       </div>
     </form>
     <div v-if="comments.length>0">
@@ -43,10 +51,16 @@
           <!-- <span class="date-posted">{{ comment.CreateTime | date('MMM DD, YYYY') }}</span> -->
           <span class="date-posted">
             {{ comment.CreateTime | date('MMM DD, YYYY') }} &nbsp;
-            <button type="button" class="btn btn-sm btn-primary"
+            <button v-if="user!=null" type="button" class="btn btn-sm btn-primary"
                 @click.prevent="openForm(comment.Id,comment.Id,comment.CreatorID)"
-            >reply
-              </button>
+            >
+              reply
+            </button>
+            <button v-else type="button" class="btn btn-sm btn-primary"
+                @click.prevent="toLogin"
+            >
+            Log on to reply
+            </button>
             </span>
             <form v-if="curCommentID==comment.Id" class="card comment-form">
               <div class="card-block">
@@ -105,9 +119,13 @@
                   
                   <span class="date-posted">
                     {{ child.CreateTime | date('MMM DD, YYYY') }} &nbsp;
-                    <button type="button" class="btn btn-sm btn-primary"
+                    <button v-if="user" type="button" class="btn btn-sm btn-primary"
                         @click.prevent="openForm(comment.Id,child.Id,child.CreatorID)"
                     >reply
+                      </button>
+                      <button v-else type="button" class="btn btn-sm btn-primary"
+                        @click.prevent="toLogin"
+                    >Log on to reply
                       </button>
                     </span>
                   <form v-if="curCommentID==child.Id" class="card comment-form">
@@ -136,11 +154,11 @@
     <div v-else>
       <div class="card">
         <div class="card-block">
-          暂无评论...
+          No Comments...
         </div>
         <div class="card-footer">
 
-          一起参与讨论吧
+          What do you want to talk about this blog?
         </div>
       </div>
     </div>
@@ -150,7 +168,7 @@
 
 <script>
 import { getComments,postComment } from '@/api/article'
-
+import {mapState,mapMutations} from 'vuex'
 export default {
   name: 'ArticleComments',
   props: {
@@ -188,35 +206,52 @@ export default {
       }
     }
   },
+  computed:{
+    ...mapState(['user'])
+  },
   async mounted () {
     const { data } = await getComments(this.params)
     console.log(data.response.data)
     this.comments = data.response.data
   },
   methods:{
+    ...mapMutations(['setPath']),
     async submiteComment(){
-      const {data}=await postComment(this.submitForm)
-      // console.log(data)
-      if(data.success){
-        this.comments.unshift(data.response)
-        this.submitForm.bContent=''
+      if(this.submitForm.bContent==''){
+        this.$message("Please input the content of your blog!")
+      }else{
+        const {data}=await postComment(this.submitForm)
+        // console.log(data)
+        if(data.success){
+          this.comments.unshift(data.response)
+          this.submitForm.bContent=''
+        }
       }
+      
     },
     async submiteChildComment(){
-      const {data}=await postComment(this.submitChildForm)
-      // console.log(data)
-      if(data.success){
-        let parentobj=this.comments.find(item=>item.Id==data.response.ParentID)
-        // console.log(parentobj)
-        parentobj&&parentobj.unshift(data.response)
-        this.submitChildForm.bContent=''
+      if(this.submitChildForm.bContent==''){
+        this.$message("Please input the content of your blog!")
+      }else{
+        const {data}=await postComment(this.submitChildForm)
+        // console.log(data)
+        if(data.success){
+          let parentobj=this.comments.find(item=>item.Id==data.response.ParentID)
+          // console.log(parentobj)
+          parentobj&&parentobj.unshift(data.response)
+          this.submitChildForm.bContent=''
+        }
       }
-      // data.success&&this.comments.find(item=>item.)
     },
     openForm(parentcommentid,curcommontid,CreatorID){
       this.submitChildForm.ParentID=parentcommentid
       this.curCommentID=curcommontid
       this.submitChildForm.CallBackTo=CreatorID
+    },
+    toLogin(){
+      console.log(this.$route)
+      this.setPath(this.$route.path)
+      this.$router.push('/login')
     }
   }
 }

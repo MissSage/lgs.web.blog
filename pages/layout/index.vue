@@ -93,6 +93,14 @@ export default {
   name: 'LayoutIndex',
   computed: {
     ...mapState(['user'])
+  },
+  head () {
+    return {
+      title: `叨叨咪`,
+      meta: [
+        { hid: 'description', name: 'description', content: "叨叨咪" }
+      ]
+    }
   }
 }
 </script>

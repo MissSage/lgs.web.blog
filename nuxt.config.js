@@ -88,6 +88,7 @@ module.exports = {
   // 注册插件
   plugins: [
     '~/plugins/dayjs.js',
+    // '~/plugins/router.js',
     '~/plugins/request.js',
     {
       src: '~plugins/TextEditor.js',

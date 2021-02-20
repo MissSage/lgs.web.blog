@@ -58,8 +58,8 @@
             >
               <h1>{{ article.btitle }}</h1>
               <p>{{ article.bRemark }}</p>
-              <span v-if="user">Read more...</span>
-              <span v-else>Login for more...</span>
+              <span>Read more...</span>
+              <!-- <span v-else>Login for more...</span> -->
             </nuxt-link>
           </div>
         </div>
@@ -67,7 +67,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { getArticles } from "@/api/article"
 import { mapState } from "vuex";

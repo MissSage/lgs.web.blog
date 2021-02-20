@@ -25,3 +25,11 @@ export const GetUserByToken=token=>{
     url:'/api/User/GetInfoByToken?token='+token
   })
 }
+
+export const UpdateUser=data=>{
+  return request({
+    method:'POST',
+    url:'/api/User/Edit',
+    data
+  })
+}

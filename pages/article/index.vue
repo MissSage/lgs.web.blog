@@ -71,6 +71,9 @@ export default {
         { hid: 'description', name: 'description', content: this.article.digest }
       ]
     }
+  },
+  mounted(){
+    console.log(this.$route)
   }
 }
 </script>
