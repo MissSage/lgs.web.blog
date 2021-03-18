@@ -78,13 +78,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .container{
   display: block;
   width: 80%;
   height: 100%;
 }
 img{
-  min-width: 70%;
+  max-width: 70%;
+  min-width: 30%;
 }
 </style>

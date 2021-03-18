@@ -58,9 +58,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 img{
-  min-width: 70%;
+  min-width: 30%;
+  max-width: 70%;
   margin: 10px auto;
 }
 </style>
