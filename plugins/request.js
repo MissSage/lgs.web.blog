@@ -3,11 +3,11 @@
  */
 
 import axios from 'axios'
-// import {baseURL} from '../Public/config'
+ import {proxyLocalUrl} from '../Public/config'
 // 创建请求对象
 export const request = axios.create({
   // baseURL: 'http://www.miaojiangjiang.com:90/'
-  // baseURL:baseURL
+  baseURL:'http://localhost:3000',
   timeout:100000
 })
 
@@ -42,6 +42,7 @@ export default ({ store ,redirect}) => {
     let res=error.response
 
     if(res.status==401){
+      console.log(401)
       return redirect('/login')
     }
 		return Promise.resolve(error.response)

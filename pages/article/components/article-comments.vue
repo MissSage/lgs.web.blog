@@ -200,8 +200,8 @@
     </div>
     <div v-else>
       <div class="card">
-        <div class="card-block">No Comments...</div>
-        <div class="card-footer">What do you want to talk about this blog?</div>
+        <div class="card-block">没有评论...</div>
+        <div class="card-footer">和大家一起讨论吧！</div>
       </div>
     </div>
   </div>

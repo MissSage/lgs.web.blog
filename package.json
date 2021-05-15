@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start"
+    "dev": "set NODE_ENV=development&& nuxt",
+    "devunix":"export NODE_ENV=development&& nuxt",
+    "build": "set NODE_ENV=production&& nuxt build",
+    "start": "set NODE_ENV=production&& nuxt start"
   },
   "keywords": [],
   "author": "",

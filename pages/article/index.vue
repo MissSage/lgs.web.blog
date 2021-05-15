@@ -48,13 +48,10 @@ import ArticleComments from './components/article-comments'
 export default {
   name: 'ArticleIndex',
   async asyncData ({ params }) {
-    console.log(params)
     const {data} = await getArticle(params.slug)
     const article = data.response
     // const md = new MarkdownIt()
-    // console.log(article.bcontent)
     // article.bcontent = md.render(article.bcontent)
-    // console.log(article.bcontent)
 
     return {
       article
@@ -71,9 +68,6 @@ export default {
         { hid: 'description', name: 'description', content: this.article.digest }
       ]
     }
-  },
-  mounted(){
-    console.log(this.$route)
   }
 }
 </script>
@@ -81,11 +75,11 @@ export default {
 <style scoped>
 .container{
   display: block;
-  width: 80%;
+  width: 60%;
   height: 100%;
 }
 img{
-  max-width: 70%;
+  max-width: 100%;
   min-width: 30%;
 }
 </style>

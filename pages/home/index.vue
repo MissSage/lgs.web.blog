@@ -85,6 +85,7 @@ export default {
         tag: '',
       }
     const { data } = await getArticles(query)
+    console.log(data)
     articles = data.response&&data.response.data
     
     return {
