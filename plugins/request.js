@@ -35,6 +35,7 @@ export default ({ store ,redirect}) => {
     return Promise.reject(error)
   })
   request.interceptors.response.use(response=>{
+    console.log(response)
     return response
   },function(error){
     console.log(error.response)

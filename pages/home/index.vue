@@ -15,25 +15,25 @@
             :key="article.id"
           >
             <div class="article-meta">
-              <!-- <nuxt-link :to="{
+              <nuxt-link :to="{
                 name: 'profile',
                 params: {
-                  username: article.author.username
+                  username: article.Author.uID
                 }
               }">
-                <img :src="article.author.image" />
-              </nuxt-link> -->
+                <img :src="article.Author.uPhoto" />
+              </nuxt-link>
               <div class="info">
-                <!-- <nuxt-link class="author" :to="{
+                <nuxt-link class="author" :to="{
                   name: 'profile',
                   params: {
-                    username: article.author.username
+                    username: article.Author.uID
                   }
                 }">
-                  {{ article.author.username }}
-                </nuxt-link> -->
+                  {{ article.Author.uRealName||article.Author.uLoginName }}
+                </nuxt-link>
                 <span class="date">{{
-                  article.bCreateTime | date("MMM DD, YYYY")
+                  article.bCreateTime | date('MMM DD, YYYY')
                 }}</span>
               </div>
               <!-- <button
@@ -68,33 +68,36 @@
   </div>
 </template>
 <script>
-import { getArticles } from "@/api/article"
-import { mapState } from "vuex";
+import { getArticles } from '@/api/article'
+import { mapState } from 'vuex'
 
 export default {
-  name: "HomeIndex",
+  name: 'HomeIndex',
   async asyncData(context) {
     let articles = [],
-    query={
-      page : 1,
-      intPageSize : 50,
-      key : "",
-      isPublic:true,
-      isTop:false,
-      bcategory : "技术博文",
-      tag:''
-    }
-    const { data } = await await getArticles(query)
-    // console.log(data)
-    articles = data.response.data
+      query = {
+        page: 1,
+        intPageSize: 50,
+        key: '',
+        isPublic: true,
+        isTop: false,
+        bcategory: '',
+        tag: '',
+      }
+    const { data } = await getArticles(query)
+    articles = data.response&&data.response.data
+    
     return {
-      articles
+      articles,
     }
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(['user']),
+  },
+  mounted(){
+    console.log(this.articles)
   }
-};
+}
 </script>
 
 <style>
