@@ -1,7 +1,8 @@
-import { request } from '@/plugins/request'
+import {request} from '@/plugins/request'
 
 // 上传文章
 export const postArticle = data => {
+    console.log(request)
     return request({
         method: 'POST',
         url: '/api/blogarticle',

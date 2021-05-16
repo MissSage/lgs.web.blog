@@ -3,7 +3,7 @@
     <div class="container page">
       <div class="row">
         <div class="col-md-6 offset-md-3 col-xs-12">
-          <h1 class="text-xs-center">{{ isLogin ? "Sign in" : "Sign up" }}</h1>
+          <h1 class="text-xs-center">{{ isLogin ? 'Sign in' : 'Sign up' }}</h1>
           <p class="text-xs-center">
             <!-- <a href="">Have an account?</a> -->
             <nuxt-link v-if="isLogin" to="/register"
@@ -41,7 +41,7 @@
               />
             </fieldset>
             <button class="btn btn-lg btn-primary pull-xs-right">
-              {{ isLogin ? "Sign in" : "Sign up" }}
+              {{ isLogin ? 'Sign in' : 'Sign up' }}
             </button>
           </form>
         </div>
@@ -51,32 +51,29 @@
 </template>
 
 <script>
-import { login, register, GetUserByToken } from "@/api/user"
-import {baseRemoteHost} from '../../Public/config.js'
-import {mapState} from 'vuex'
+import { login, register, GetUserByToken } from '@/api/user'
+import { baseRemoteHost } from '../../Public/config.js'
+import { mapState } from 'vuex'
 // 仅在客户端加载 js-cookie 包
-const Cookie = process.client ? require("js-cookie") : undefined
+const Cookie = process.client ? require('js-cookie') : undefined
 
 export default {
-  middleware: "notAuthenticated",
-  name: "LoginIndex",
+  middleware: 'notAuthenticated',
+  name: 'LoginIndex',
   computed: {
     ...mapState(['lastPath']),
     isLogin() {
-      return this.$route.name === "login"
+      return this.$route.name === 'login'
     },
   },
   data() {
     return {
       user: {
-        name: "admins",
-        pass: "admins",
+        name: 'admins',
+        pass: 'admins',
       },
       errors: {}, // 错误信息
-    };
-  },
-  mounted(){
-    console.log(this.$route)
+    }
   },
   methods: {
     async onSubmit() {
@@ -85,39 +82,38 @@ export default {
         // 提交表单请求登录
         const { data } = this.isLogin
           ? await login(this.user)
-          : await register(this.user);
+          : await register(this.user)
         // console.log(data)
-        if(data.success==true){
-          this.$store.commit("setToken", data.response);
-          Cookie.set('token',data.response)
-          GetUserByToken(data.response).then(result=>{
-            let res=result.data;
+        if (data.success == true) {
+          this.$store.commit('setToken', data.response)
+          Cookie.set('token', data.response)
+          GetUserByToken(data.response).then((result) => {
+            let res = result.data
             // console.log(res)
-            if(res.success==true){
-              this.$store.commit("setUser", res.response);
-              Cookie.set("user", res.response)
+            if (res.success == true) {
+              this.$store.commit('setUser', res.response)
+              Cookie.set('user', res.response)
               console.log(this.$route)
-              if(this.lastPath){
-                　　this.$router.push(this.lastPath); // 登录成功后，返回上次进入的页面；
-              }else{
-                this.$router.push("/")
+              if (this.lastPath) {
+                this.$router.push(this.lastPath) // 登录成功后，返回上次进入的页面；
+              } else {
+                this.$router.push('/')
               }
-              
-            }else{
+            } else {
               // console.log(res)
             }
           })
-        }else{
+        } else {
           // console.log(data)
         }
         // 跳转到首页
       } catch (err) {
         // console.log(err)
-        this.errors = err.response.data.errors;
+        this.errors = err.response.data.errors
       }
     },
   },
-};
+}
 </script>
 
 <style>

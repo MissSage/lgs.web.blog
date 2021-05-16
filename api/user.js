@@ -1,4 +1,4 @@
-import { request } from '@/plugins/request'
+import {request} from '@/plugins/request'
 
 
 // 用户登录

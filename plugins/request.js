@@ -3,12 +3,11 @@
  */
 
 import axios from 'axios'
- import {proxyLocalUrl} from '../Public/config'
+import { LOCALHOST } from '../Public/config'
 // 创建请求对象
 export const request = axios.create({
-  // baseURL: 'http://www.miaojiangjiang.com:90/'
-  baseURL:'http://localhost:3000',
-  timeout:100000
+  // baseURL: 'http://www.miaojiangjiang.com:90/',
+  baseURL:LOCALHOST
 })
 
 //通过插件机制获取到上下文对象（query、params、req、res、app、store...）
@@ -18,7 +17,7 @@ export default ({ store ,redirect}) => {
   // Add a request interceptor
   // 任何请求都要经过请求拦截器
   // 我们可以在请求拦截器中做一些公共的业务处理,例如统一设置 token
-  request.interceptors.request.use(function (config) {
+  request.interceptors.request.use(config=>{
     // Do something before request is sent
     // 请求就会经过这里
     const { token } = store.state
@@ -29,22 +28,19 @@ export default ({ store ,redirect}) => {
 
     // 返回 config 请求配置对象
     return config
-  }, function (error) {
-    // 如果请求失败(此时请求还没有发出去)就会进入这里
-    // Do something with request error
+  },error=>{
     return Promise.reject(error)
   })
   request.interceptors.response.use(response=>{
-    console.log(response)
     return response
   },function(error){
-    console.log(error.response)
+    console.dir(error)
     let res=error.response
 
     if(res.status==401){
-      console.log(401)
       return redirect('/login')
     }
-		return Promise.resolve(error.response)
+    return Promise.resolve(error.response)
   })
+  
 }

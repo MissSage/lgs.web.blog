@@ -51,19 +51,23 @@ module.exports = {
               component: resolve(__dirname, 'pages/profile/')
             }
           ]
+        },
+        {
+          name: 'customerror404',
+          path: '*',
+          component: resolve(__dirname, 'pages/error/404.vue')
         }
       ])
     }
   },
-
-  server: {
-    host: '0.0.0.0',
-    port: 3000
-  },
+  // server: {
+  //   host: config.baseRemoteHost,
+  //   port: config.baseRemotePort
+  // },
   axios: {
     // baseURL:'http://localhost',
-    // baseURL:'http://localhost:2364',
-    baseURL:config.baseRemoteHost,
+    // baseURL:'http://localhost:3000',
+    baseURL:config.LOCALHOST,
     // See https://github.com/nuxt-community/axios-module#options
     proxy: true, // 表示开启代理
     prefix: '/api', // 表示给请求url加个前缀 /api
@@ -72,6 +76,7 @@ module.exports = {
   proxy: {
     '/api': {
         // target: 'http://www.miaojiangjiang.com:90', // 目标接口域名
+        //target:config.proxyLocalUrl,
         target:process.env.NODE_ENV==='production'? config.proxyRemoteUrl:config.proxyLocalUrl,
         changeOrigin: true, // 表示是否跨域
         // pathRewrite: {
