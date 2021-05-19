@@ -52,7 +52,6 @@
 
 <script>
 import { login, register, GetUserByToken } from '@/api/user'
-import { baseRemoteHost } from '../../Public/config.js'
 import { mapState } from 'vuex'
 // 仅在客户端加载 js-cookie 包
 const Cookie = process.client ? require('js-cookie') : undefined
@@ -73,11 +72,11 @@ export default {
         pass: 'admins',
       },
       errors: {}, // 错误信息
+      token: '',
     }
   },
   methods: {
     async onSubmit() {
-      console.log(this.$route)
       try {
         // 提交表单请求登录
         const { data } = this.isLogin
@@ -85,31 +84,50 @@ export default {
           : await register(this.user)
         // console.log(data)
         if (data.success == true) {
-          this.$store.commit('setToken', data.response)
-          Cookie.set('token', data.response)
-          GetUserByToken(data.response).then((result) => {
-            let res = result.data
-            // console.log(res)
-            if (res.success == true) {
-              this.$store.commit('setUser', res.response)
-              Cookie.set('user', res.response)
-              console.log(this.$route)
-              if (this.lastPath) {
-                this.$router.push(this.lastPath) // 登录成功后，返回上次进入的页面；
-              } else {
-                this.$router.push('/')
-              }
-            } else {
-              // console.log(res)
+          if (this.isLogin) {
+            this.$store.commit('setToken', data.response)
+            Cookie.set('token', data.response)
+            this.token = data.response
+            this.getUserInfo()
+          }else{
+            login(this.user).then(res=>{
+              if(res.data.success){
+              this.$store.commit('setToken', res.data.response)
+              Cookie.set('token', res.data.response)
+              this.token = res.data.response
+              this.getUserInfo()
+            }else{
+              console.log(data.msg)
+              this.$router.push('/login')
             }
-          })
+            })
+            
+          }
         } else {
-          // console.log(data)
+          console.log(data.msg)
         }
         // 跳转到首页
       } catch (err) {
-        // console.log(err)
+        console.log(err)
         this.errors = err.response.data.errors
+      }
+    },
+    async getUserInfo() {
+      if (this.toke === '') {
+        console.log('token was not got')
+        return
+      }
+      const { data } = await GetUserByToken(this.token)
+      if (data.success == true) {
+        this.$store.commit('setUser', data.response)
+        Cookie.set('user', data.response)
+        if (this.lastPath) {
+          this.$router.push(this.lastPath) // 登录成功后，返回上次进入的页面；
+        } else {
+          this.$router.push('/')
+        }
+      } else {
+        console.log(data)
       }
     },
   },

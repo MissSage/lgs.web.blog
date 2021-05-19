@@ -10,7 +10,11 @@
         ></textarea>
       </div>
       <div class="card-footer">
-        <button class="btn btn-sm btn-primary" @click.prevent="submiteComment">
+        <button
+          :disabled="submitForm.bContent === ''"
+          class="btn btn-sm btn-primary"
+          @click.prevent="submiteComment"
+        >
           Post Comment
         </button>
       </div>
@@ -41,7 +45,11 @@
               },
             }"
           >
-            <img :src="comment.Author.uPhoto" class="comment-author-img" />
+            <img
+              :src="comment.Author.uPhoto || uPhoto"
+              class="comment-author-img"
+              alt="img"
+            />
           </nuxt-link>
           &nbsp;
           <nuxt-link
@@ -53,7 +61,7 @@
               },
             }"
           >
-            {{ comment.Author.uLoginName }}
+            {{ comment.Author.name }}
           </nuxt-link>
           <!-- <span class="date-posted">{{ comment.CreateTime | date('MMM DD, YYYY') }}</span> -->
           <span class="date-posted">
@@ -85,112 +93,117 @@
               ></textarea>
             </div>
             <div class="card-footer">
-                <button
-                  class="btn btn-sm btn-primary"
-                  @click.prevent="submiteChildComment()"
-                >
-                  Post Comment
-                </button>
+              <button
+                class="btn btn-sm btn-primary"
+                @click.prevent="submiteChildComment()"
+              >
+                Post Comment
+              </button>
             </div>
           </form>
         </div>
         <div v-if="comment.Children" style="margin: 15px">
-          <div class="card">
-            <div v-for="child in comment.Children" :key="child.Id">
-              <div v-if="child.Author">
-                <div class="card-block">
-                  <p class="card-text">
-                    <nuxt-link
-                      v-if="child.CallbackUser"
-                      class="comment-author"
-                      :to="{
-                        name: 'profile',
-                        params: {
-                          username: child.CallbackUser.uID,
-                        },
-                      }"
-                    >
-                      @{{ child.CallbackUser.uLoginName }}&nbsp;:
-                    </nuxt-link>
-                    {{ child.bContent }}
-                  </p>
-                </div>
-                <div class="card-footer">
+          <div
+            class="card"
+            v-for="child in comment.Children"
+            :key="child.Id"
+            style="margin: 15px"
+          >
+            <div v-if="child.Author">
+              <div class="card-block">
+                <p class="card-text">
                   <nuxt-link
+                    v-if="child.CallbackUser"
                     class="comment-author"
                     :to="{
                       name: 'profile',
                       params: {
-                        username: child.Author.uID,
+                        username: child.CallbackUser.uID,
                       },
                     }"
                   >
-                    <img
-                      :src="child.Author.uPhoto"
-                      class="comment-author-img"
-                    />
+                    @{{ child.CallbackUser.name }}&nbsp;:
                   </nuxt-link>
-                  &nbsp;
-                  <nuxt-link
-                    v-if="child.Author"
-                    class="comment-author"
-                    :to="{
-                      name: 'profile',
-                      params: {
-                        username: child.Author.uID,
-                      },
-                    }"
-                  >
-                    {{ child.Author.uLoginName }}
-                  </nuxt-link>
-                  <nuxt-link v-else class="comment-author">
-                    {{ child.Author.uLoginName }}
-                  </nuxt-link>
+                  {{ child.bContent }}
+                </p>
+              </div>
+              <div class="card-footer">
+                <nuxt-link
+                  class="comment-author"
+                  :to="{
+                    name: 'profile',
+                    params: {
+                      username: child.Author.uID,
+                    },
+                  }"
+                >
+                  <img
+                  v-if="child.Author.uPhoto"
+                    :src="child.Author.uPhoto"
+                    class="comment-author-img"
+                  />
+                  <img
+                  v-else
+                    :src="uPhoto"
+                    class="comment-author-img"
+                  />
+                </nuxt-link>
+                &nbsp;
+                <nuxt-link
+                  v-if="child.Author"
+                  class="comment-author"
+                  :to="{
+                    name: 'profile',
+                    params: {
+                      username: child.Author.uID,
+                    },
+                  }"
+                >
+                  {{ child.Author.name }}
+                </nuxt-link>
+                <nuxt-link v-else class="comment-author">
+                  {{ child.Author.uLoginName }}
+                </nuxt-link>
 
-                  <span class="date-posted">
-                    {{ child.CreateTime | date('MMM DD, YYYY') }} &nbsp;
-                    <button
-                      v-if="user"
-                      type="button"
-                      class="btn btn-sm btn-primary"
-                      @click.prevent="
-                        openForm(comment.Id, child.Id, child.CreatorID)
-                      "
-                    >
-                      reply
-                    </button>
-                    <button
-                      v-else
-                      type="button"
-                      class="btn btn-sm btn-primary"
-                      @click.prevent="toLogin"
-                    >
-                      Login to reply
-                    </button>
-                  </span>
-                  <form
-                    v-if="curCommentID == child.Id"
-                    class="card comment-form"
+                <span class="date-posted">
+                  {{ child.CreateTime | date('MMM DD, YYYY') }} &nbsp;
+                  <button
+                    v-if="user"
+                    type="button"
+                    class="btn btn-sm btn-primary"
+                    @click.prevent="
+                      openForm(comment.Id, child.Id, child.CreatorID)
+                    "
                   >
-                    <div class="card-block">
-                      <textarea
-                        v-model="submitChildForm.bContent"
-                        class="form-control"
-                        placeholder="Write a comment..."
-                        rows="3"
-                      ></textarea>
-                    </div>
-                    <div class="card-footer">
-                      
-                      <button
-                        class="btn btn-sm btn-primary"
-                        @click.prevent="submiteChildComment()"
-                      >
-                        Post Comment
-                      </button>
-                    </div>
-                  </form>
-                </div>
+                    reply
+                  </button>
+                  <button
+                    v-else
+                    type="button"
+                    class="btn btn-sm btn-primary"
+                    @click.prevent="toLogin"
+                  >
+                    Login to reply
+                  </button>
+                </span>
+                <form v-if="curCommentID == child.Id" class="card comment-form">
+                  <div class="card-block">
+                    <textarea
+                      v-model="submitChildForm.bContent"
+                      class="form-control"
+                      placeholder="Write a comment..."
+                      rows="3"
+                    ></textarea>
+                  </div>
+                  <div class="card-footer">
+                    <button
+                      class="btn btn-sm btn-primary"
+                      @click.prevent="submiteChildComment()"
+                    >
+                      Post Comment
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -220,6 +233,7 @@ export default {
   },
   data() {
     return {
+      uPhoto: require('../../../static/images/uPhoto.jpg'),
       curCommentID: -1, //当前点击的评论的id
       comments: [], // 评论列表
       //获取评论表列参数
@@ -236,6 +250,7 @@ export default {
         ParentID: -1,
         CallBackTo: -1,
         isRootComment: true,
+        CreatorID: '',
       },
       //回复表单
       submitChildForm: {
@@ -244,6 +259,7 @@ export default {
         ParentID: -1,
         CallBackTo: -1,
         isRootComment: false,
+        CreatorID: '',
       },
     }
   },
@@ -261,11 +277,17 @@ export default {
       if (this.submitForm.bContent == '') {
         this.$message('Please input the content of your blog!')
       } else {
+        this.submitForm.CreatorID = this.user.uID
         const { data } = await postComment(this.submitForm)
         // console.log(data)
         if (data.success) {
           this.comments.unshift(data.response)
           this.submitForm.bContent = ''
+        } else {
+          this.$message({
+            type: 'warning',
+            message: data.msg,
+          })
         }
       }
     },
@@ -285,13 +307,20 @@ export default {
             parentobj.Children.unshift(data.response)
           this.submitChildForm.bContent = ''
           this.curCommentID = -1
+        } else {
+          this.$message({
+            type: 'warning',
+            message: data.msg,
+          })
         }
       }
     },
     openForm(parentcommentid, curcommontid, CreatorID) {
+      console.log(CreatorID)
       this.submitChildForm.ParentID = parentcommentid
       this.curCommentID = curcommontid
       this.submitChildForm.CallBackTo = CreatorID
+      this.submitChildForm.CreatorID = this.user.uID
     },
     toLogin() {
       console.log(this.$route)

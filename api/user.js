@@ -12,10 +12,14 @@ export const login = data => {
 
 // 用户注册
 export const register = data => {
+  const params={
+    uLoginName:data.name,
+    uLoginPWD:data.pass
+  }
   return request({
     method: 'POST',
     url: '/api/User/Post',
-    params:{uLoginName:data.name,uLoginPWD:data.pass}
+    data:params
   })
 }
 

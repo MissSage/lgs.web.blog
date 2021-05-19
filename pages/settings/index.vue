@@ -122,7 +122,7 @@ export default {
           let mgpath=baseURL + "/" + data.response[0].VirPath;
           console.log(mgpath)
           this.imageUrl=mgpath
-          this.setUserPhoto(this.imageUrl)
+          this.setUserPhoto(data.response[0].VirPath)
           
           this.UpdateUser()
           
