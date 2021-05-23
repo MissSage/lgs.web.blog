@@ -1,5 +1,6 @@
 const cookieparser = process.server ? require('cookieparser') : undefined
-
+const Cookie = process.client ? require('js-cookie') : undefined
+import {Message} from 'element-ui'
 // 在服务端渲染期间运行都是同一个实例
 // 为了防止数据冲突，务必要把 state 定义成一个函数，返回数据对象
 export const state = () => {
@@ -39,6 +40,10 @@ export const mutations = {
   },
   removeUser(state){
     state.user=null
+  },
+  logOut(state){
+    state.user=null
+    state.token=''
   }
 }
 
@@ -59,9 +64,17 @@ export const actions = {
       } catch (err) {
         // No valid cookie found
       }
+    }else{
+      Message({type:'warning',message:'登录过期，请重新登录！'})
     }
     // // 提交 mutation 修改 state 状态
     commit('setToken',token)
     commit('setUser', user)
+  },
+  logOutAction({commit}){
+    Cookie.remove('token')
+    Cookie.remove('user')
+    commit('logOut')
+
   }
 }

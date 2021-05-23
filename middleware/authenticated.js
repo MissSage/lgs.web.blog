@@ -9,7 +9,8 @@ export default function ({ store, redirect }) {
     if(token){
       store.commit('setToken',token)
     }else{
-      return redirect('/login')
+      store.dispatch('logOut')
+      return redirect('/')
     }
   }
 }

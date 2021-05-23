@@ -1,7 +1,7 @@
 <template>
   <div class="profile-page">
 
-    <div class="user-info" :style="{backgroundImage:'url('+getProfileImg(user.uProfileImg)+')', backgroundSize:'cover'}">
+    <div class="user-info" :style="{backgroundImage:'url('+getProfileImg(user&&user.uProfileImg)+')', backgroundSize:'cover'}">
       <div class="container">
         <div class="row">
 

@@ -4,6 +4,7 @@
 
 import axios from 'axios'
 import { LOCALHOST } from '../Public/config'
+import { state } from '../store'
 // 创建请求对象
 export const request = axios.create({
   // baseURL: 'http://www.miaojiangjiang.com:90/',
@@ -38,7 +39,8 @@ export default ({ store ,redirect}) => {
     let res=error.response.data
 
     if(res.status==401){
-      return redirect('/login')
+      store.dispatch('logOut')
+      return redirect('/')
     }
     return Promise.resolve(error.response)
   })
