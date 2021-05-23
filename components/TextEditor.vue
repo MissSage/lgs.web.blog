@@ -13,7 +13,7 @@ export default {
     value: {
       type: String,
       default: "",
-    },
+    }
   },
   mounted() {
     this.initEditor();
@@ -25,7 +25,7 @@ export default {
 
       editor.config.onchange = (value) => {
         this.$emit("input", value);
-      };
+      }
       editor.config.uploadImgMaxSize = 20 * 1024 * 1024
       editor.config.uploadImgMaxLength = 5
       editor.config.height = 500

@@ -3,67 +3,80 @@
     <div class="container page">
       <div class="row">
         <div class="col-md-6 offset-md-3 col-xs-12">
-          <h1 class="text-xs-center">Your Settings</h1>
+          <h1 class="text-xs-center">个人设置</h1>
 
-          <form>
-            <fieldset>
-              <fieldset class="form-group">
-                <el-upload
-                  class="avatar-uploader"
-                  action="https://jsonplaceholder.typicode.com/posts/"
-                  :show-file-list="false"
-                  :before-upload="beforeAvatarUpload"
-                  :http-request="handleUpload"
-                >
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-                <input
-                  class="form-control"
-                  type="text"
-                  placeholder="URL of profile picture"
+          <el-form>
+            <el-form-item>
+              <el-upload
+                class="avatar-uploader"
+                action=""
+                :show-file-list="false"
+                :before-upload="beforeAvatarUpload"
+                :http-request="handleAvatarUpload"
+              >
+                <img
+                  v-if="user.uPhoto"
+                  :src="getFullPath(user.uPhoto)"
+                  class="avatar"
                 />
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  class="form-control"
-                  type="text"
-                  placeholder="URL of profile picture"
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-form-item>
+            <el-form-item>
+              <el-upload
+                class="profile-uploader"
+                action=""
+                :show-file-list="false"
+                :before-upload="beforeProfileUpload"
+                :http-request="handleProfileUpload"
+              >
+                <img
+                  v-if="user.uProfileImg"
+                  :src="getFullPath(user.uProfileImg)"
+                  class="profile"
                 />
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  class="form-control form-control-lg"
-                  type="text"
-                  placeholder="Your Name"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <textarea
-                  class="form-control form-control-lg"
-                  rows="8"
-                  placeholder="Short bio about you"
-                ></textarea>
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  class="form-control form-control-lg"
-                  type="text"
-                  placeholder="Email"
-                />
-              </fieldset>
-              <fieldset class="form-group">
-                <input
-                  class="form-control form-control-lg"
-                  type="password"
-                  placeholder="Password"
-                />
-              </fieldset>
+                <i v-else class="el-icon-plus profile-uploader-icon"></i>
+              </el-upload>
+              <!-- <input
+                class="form-control"
+                type="text"
+                placeholder="URL of profile picture"
+              /> -->
+            </el-form-item>
+            <el-form-item>
+              <input
+                class="form-control form-control-lg"
+                type="text"
+                placeholder="Your Name"
+              />
+            </el-form-item>
+            <el-form-item>
+              <textarea
+                class="form-control form-control-lg"
+                rows="8"
+                placeholder="Short bio about you"
+              ></textarea>
+            </el-form-item>
+            <el-form-item>
+              <input
+                class="form-control form-control-lg"
+                type="text"
+                placeholder="Email"
+              />
+            </el-form-item>
+            <el-form-item>
+              <input
+                class="form-control form-control-lg"
+                type="password"
+                placeholder="Password"
+              />
+            </el-form-item>
+            <el-form-item>
               <button class="btn btn-lg btn-primary pull-xs-right">
                 Update Settings
               </button>
-            </fieldset>
-          </form>
+            </el-form-item>
+          </el-form>
         </div>
       </div>
     </div>
@@ -71,91 +84,102 @@
 </template>
 
 <script>
-import { upLoadImage } from "~/api/article"
-import {UpdateUser} from "~/api/user"
-import { proxyRemoteUrl,proxyLocalUrl } from "~/Public/config"
-import {mapState,mapMutations} from 'vuex'
+import { upLoadImage } from '~/api/article'
+import { UpdateUser } from '~/api/user'
+import { mapState, mapMutations } from 'vuex'
+import { getFullPath } from '../../utils/utils.js'
 export default {
-  middleware: "authenticated",
-  name: "SettingsIndex",
+  middleware: 'authenticated',
+  name: 'SettingsIndex',
   data() {
-    return {
-      imageUrl: "",
-    };
+    return {}
   },
-  computed:{
+  computed: {
     ...mapState(['user']),
   },
-  mounted(){
-    this.imageUrl=this.user.uPhoto
-    console.log(this.imageUrl)
-  },
   methods: {
-    ...mapMutations(['setUserPhoto']),
-    // handleAvatarSuccess(res, file) {
-    //   this.imageUrl = URL.createObjectURL(file.raw);
-    // },
+    ...mapMutations(['setUserPhoto','setUserProfile']),
+    getFullPath(path) {
+      return getFullPath(path)
+    },
     beforeAvatarUpload(file) {
       // const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
 
       // if (!isJPG) {
       //   this.$message.error('上传头像图片只能是 JPG 格式!');
       // }
+      const isLt2M = file.size / 1024 / 1024 < 2
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+        this.$message.error('上传头像图片大小不能超过 2MB!')
       }
-      return isLt2M;
+      return isLt2M
     },
-    async handleUpload(options) {
-      const fd = new FormData();
-      fd.append("file", options.file);
-      const { data } = await upLoadImage(fd);
-      console.log(data);
-      if (data.success == true) {
-        console.log(data.response);
-        if (data.response && data.response.length) {
-          console.log(process.env.NODE_ENV)
-          debugger
-          let baseURL = process.env.NODE_ENV == "production" ? proxyRemoteUrl : proxyLocalUrl;
-          console.log(baseURL)
-          let mgpath=baseURL + "/" + data.response[0].VirPath;
-          console.log(mgpath)
-          this.imageUrl=mgpath
-          this.setUserPhoto(data.response[0].VirPath)
-          
-          this.UpdateUser()
-          
-        }else{
-          console.log(',...')
+    beforeProfileUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        this.$message.error('上传主页图片大小不能超过 2MB!')
+      }
+      return isLt2M
+    },
+    handleProfileUpload(options) {
+      let that=this
+      this.upLoadImage(options,function(response){
+        console.log(response)
+        if (response && response.length) {
+          that.setUserProfile(response[0].VirPath)
+          console.log(that.user)
+          that.UpdateUser()
         }
+      })
+    },
+    handleAvatarUpload(options) {
+      let that=this
+      this.upLoadImage(options,function(response){
+        if (response && response.length) {
+          that.setUserPhoto(response[0].VirPath)
+          console.log(that.user)
+          that.UpdateUser()
+        }
+      })
+    },
+    async upLoadImage(options,callback){
+      const fd = new FormData()
+      fd.append('file', options.file)
+      const { data } = await upLoadImage(fd)
+      if (data.success == true) {
+        callback&&callback(data.response)
       } else {
-        // console.log(data);
-        console.log(baseURL + "/" + data);
+        this.$message({
+          type: 'error',
+          message: '系统错误',
+        })
       }
     },
-    async UpdateUser(){
-      const {data}=await UpdateUser(this.user)
-      if(data.success){
-        this.$message("上传成功")
+    
+    async UpdateUser() {
+      const { data } = await UpdateUser(this.user)
+      if (data.success) {
+        this.$message('上传成功')
       }
-    }
+    },
   },
-};
+}
 </script>
-
-<style>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
+<style lang="css">
+.avatar-uploader .el-upload,
+.profile-uploader .el-upload {
+  border: 1px dashed #504e4e;
   border-radius: 6px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
 }
-.avatar-uploader .el-upload:hover {
+.avatar-uploader .el-upload:hover,
+.profile-uploader .el-upload:hover {
   border-color: #409eff;
 }
-.avatar-uploader-icon {
+.avatar-uploader-icon,
+.profile-uploader-icon {
   font-size: 28px;
   color: #8c939d;
   width: 128px;
@@ -163,9 +187,17 @@ export default {
   line-height: 128px;
   text-align: center;
 }
+.profile-uploader-icon {
+  width:540px;
+}
 .avatar {
   width: 128px;
   height: 128px;
+  display: block;
+}
+.profile{
+  width: 540px;
+  height: 108px;
   display: block;
 }
 </style>

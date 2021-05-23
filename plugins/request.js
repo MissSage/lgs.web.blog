@@ -35,7 +35,7 @@ export default ({ store ,redirect}) => {
     return response
   },function(error){
     console.dir(error)
-    let res=error.response
+    let res=error.response.data
 
     if(res.status==401){
       return redirect('/login')

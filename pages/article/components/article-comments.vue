@@ -46,7 +46,7 @@
             }"
           >
             <img
-              :src="comment.Author.uPhoto || uPhoto"
+              :src="getFullPath(comment.Author.uPhoto) || uPhoto"
               class="comment-author-img"
               alt="img"
             />
@@ -138,13 +138,7 @@
                   }"
                 >
                   <img
-                  v-if="child.Author.uPhoto"
-                    :src="child.Author.uPhoto"
-                    class="comment-author-img"
-                  />
-                  <img
-                  v-else
-                    :src="uPhoto"
+                    :src="getFullPath(child.Author.uPhoto)||uPhoto"
                     class="comment-author-img"
                   />
                 </nuxt-link>
@@ -221,8 +215,10 @@
 </template>
 
 <script>
+import { proxyRemoteUrl,proxyLocalUrl } from "~/Public/config"
 import { getComments, postComment } from '@/api/article'
 import { mapState, mapMutations } from 'vuex'
+import {getFullPath} from '@/utils/utils.js'
 export default {
   name: 'ArticleComments',
   props: {
@@ -233,7 +229,7 @@ export default {
   },
   data() {
     return {
-      uPhoto: require('../../../static/images/uPhoto.jpg'),
+      uPhoto: require('@/static/images/uPhoto.jpg'),
       curCommentID: -1, //当前点击的评论的id
       comments: [], // 评论列表
       //获取评论表列参数
@@ -273,6 +269,9 @@ export default {
   },
   methods: {
     ...mapMutations(['setPath']),
+    getFullPath(path){
+      return getFullPath(path)
+    },
     async submiteComment() {
       if (this.submitForm.bContent == '') {
         this.$message('Please input the content of your blog!')

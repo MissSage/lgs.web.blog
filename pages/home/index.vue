@@ -21,7 +21,7 @@
                   username: article.Author.uID
                 }
               }">
-                <img :src="article.Author.uPhoto" />
+                <img :src="getFullPath(article.Author.uPhoto)||uPhoto" />
               </nuxt-link>
               <div class="info">
                 <nuxt-link class="author" :to="{
@@ -70,7 +70,7 @@
 <script>
 import { getArticles } from '@/api/article'
 import { mapState } from 'vuex'
-
+import {getFullPath} from '@/utils/utils.js'
 export default {
   name: 'HomeIndex',
   async asyncData(context) {
@@ -85,19 +85,25 @@ export default {
         tag: '',
       }
     const { data } = await getArticles(query)
-    console.log(data)
     articles = data.response&&data.response.data
     
     return {
       articles,
     }
   },
+  data(){
+    return{
+      uPhoto: require('@/static/images/uPhoto.jpg'),
+    }
+  },
+  methods:{
+    getFullPath(path){
+      return getFullPath(path)
+    }
+  },
   computed: {
     ...mapState(['user']),
   },
-  mounted(){
-    console.log(this.articles)
-  }
 }
 </script>
 

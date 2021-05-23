@@ -109,8 +109,6 @@ export default {
           message: "提交失败！",
           type: "error",
         });
-        console.log("submit err:")
-        console.log(data)
       }
     },
   },
