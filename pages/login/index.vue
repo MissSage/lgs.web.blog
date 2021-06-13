@@ -68,8 +68,8 @@ export default {
   data() {
     return {
       user: {
-        name: 'admins',
-        pass: 'admins',
+        name: '',//admins
+        pass: '',//admins
       },
       errors: {}, // 错误信息
       token: '',

@@ -3,6 +3,16 @@
  */
 import * as config from './Public/config'
 module.exports = {
+  build:{
+    extend(config,{isClient}){
+      if(isClient){
+        config.devtool = 'source-map'
+      }
+    },
+    filenames: {
+      chunk: ({ isDev }) => (isDev ? '[name].js' : '[id].[contenthash].js')
+    }
+  },
   router: {
     linkActiveClass: 'active',
     // 自定义路由表规则
