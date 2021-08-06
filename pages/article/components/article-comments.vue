@@ -215,7 +215,6 @@
 </template>
 
 <script>
-import { proxyRemoteUrl,proxyLocalUrl } from "~/Public/config"
 import { getComments, postComment } from '@/api/article'
 import { mapState, mapMutations } from 'vuex'
 import {getFullPath} from '@/utils/utils.js'

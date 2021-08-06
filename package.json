@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "set NODE_ENV=development&& nuxt",
-    "devunix":"export NODE_ENV=development&& nuxt",
+    "devunix": "export NODE_ENV=development&& nuxt",
     "build": "set NODE_ENV=production&& nuxt build",
     "start": "set NODE_ENV=production&& nuxt start"
   },

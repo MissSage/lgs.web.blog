@@ -436,3 +436,7 @@ export default {
   }
 }
 ```
+
+## 9 应用部署
+
+### 打包Nuxt.js应用

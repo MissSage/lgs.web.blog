@@ -1,7 +1,4 @@
-/**
- * Nuxt.js 配置文件
- */
-import * as config from './Public/config'
+
 module.exports = {
   router: {
     linkActiveClass: 'active',
@@ -13,42 +10,42 @@ module.exports = {
       routes.push(...[
         {
           path: '/',
-          component: resolve(__dirname, 'pages/layout/'),
+          component: resolve(__dirname, 'pages/layout/layout.vue'),
           children: [
             {
               path: '', // 默认子路由
               name: 'home',
-              component: resolve(__dirname, 'pages/home/')
+              component: resolve(__dirname, 'pages/home/home.vue')
             },
             {
               path: '/login',
               name: 'login',
-              component: resolve(__dirname, 'pages/login/')
+              component: resolve(__dirname, 'pages/login/login.vue')
             },
             {
               path: '/register',
               name: 'register',
-              component: resolve(__dirname, 'pages/login/')
+              component: resolve(__dirname, 'pages/login/login.vue')
             },
             {
                 path: '/editor',
                 name: 'editor',
-                component: resolve(__dirname, 'pages/editor/')
+                component: resolve(__dirname, 'pages/editor/editor.vue')
             },
             {
               path: '/article/:slug',
               name: 'article',
-              component: resolve(__dirname, 'pages/article/')
+              component: resolve(__dirname, 'pages/article/article.vue')
             },
             {
               path: '/settings',
               name: 'settings',
-              component: resolve(__dirname, 'pages/settings/')
+              component: resolve(__dirname, 'pages/settings/settings.vue')
             },
             {
               path: '/profile/:username',
               name: 'profile',
-              component: resolve(__dirname, 'pages/profile/')
+              component: resolve(__dirname, 'pages/profile/profile.vue')
             }
           ]
         },
@@ -60,24 +57,19 @@ module.exports = {
       ])
     }
   },
-  // server: {
-  //   host: config.baseRemoteHost,
-  //   port: config.baseRemotePort
-  // },
+  server: {
+    host:'0.0.0.0',
+    port: 3000
+  },
   axios: {
-    // baseURL:'http://localhost',
-    // baseURL:'http://localhost:3000',
-    baseURL:config.LOCALHOST,
-    // See https://github.com/nuxt-community/axios-module#options
+    baseURL:'http://www.miaojiangjiang.com:90',
     proxy: true, // 表示开启代理
     prefix: '/api', // 表示给请求url加个前缀 /api
     credentials: true // 表示跨域请求时是否需要使用凭证
   },
   proxy: {
     '/api': {
-        // target: 'http://www.miaojiangjiang.com:90', // 目标接口域名
-        //target:config.proxyLocalUrl,
-        target:process.env.NODE_ENV==='production'? config.proxyRemoteUrl:config.proxyLocalUrl,
+        target:process.env.NODE_ENV==='production'? 'http://www.miaojiangjiang.com:90':'http://localhost:8081',
         changeOrigin: true, // 表示是否跨域
         // pathRewrite: {
         //   '^/api': '', // 把 /api 替换成‘’
